@@ -2,7 +2,7 @@
 
 Applies to: Windows 10 / 11. Every install here is a **one-time** job — after that, new projects just reuse the generated config.
 
-Follow the steps in order; each step ends with "how to verify". Roughly four installs in total.
+Follow the steps in order; each step ends with "how to verify". Roughly five installs in total (Python is optional).
 
 > Once you are comfortable, print the same guidance from the terminal:
 > `powershell -NoProfile -ExecutionPolicy Bypass -File "<skill-dir>\scripts\new-project.ps1" -Guide -Lang en`
@@ -62,15 +62,38 @@ winget install MiKTeX.MiKTeX
 
 ---
 
-## Step 3: Install the 3 editor extensions
+## Step 3: Install Python (optional, for .py scripts)
+
+**What it gives you**: `python.exe`, used to run and debug Python files.
+
+**Option A — automatic**
+
+```powershell
+winget install Python.Python.3.13
+```
+
+**Option B — manual**
+1. Download the installer from https://www.python.org/downloads/
+2. On the first screen make sure **Add python.exe to PATH** is checked (if you skip it, neither the editor nor the terminal will find Python)
+
+**Verify**
+- **Open a new terminal** and run `python --version`
+- If typing `python` opens the Microsoft Store instead: go to Settings → Apps → Advanced app settings → App execution aliases and turn off `python.exe` / `python3.exe`
+
+> Skip this step if you do not need Python.
+
+---
+
+## Step 4: Install the editor extensions
 
 Search and install these from the editor's **Extensions** view (the squares icon on the left):
 
 | Extension | Extension ID | Purpose |
 |---|---|---|
 | clangd | `llvm-vs-code-extensions.vscode-clangd` | C/C++ completion and diagnostics |
-| CodeLLDB | `vadimcn.vscode-lldb` | F5 debugging (`launch.json` depends on it) |
+| CodeLLDB | `vadimcn.vscode-lldb` | C/C++ F5 debugging (`launch.json` depends on it) |
 | LaTeX Workshop | `james-yu.latex-workshop` | LaTeX build and PDF preview |
+| Python | `ms-python.python` | Python run and F5 debugging (bundles debugpy) |
 
 **From the command line** (when the editor CLI is on PATH):
 
@@ -78,30 +101,34 @@ Search and install these from the editor's **Extensions** view (the squares icon
 code --install-extension llvm-vs-code-extensions.vscode-clangd
 code --install-extension vadimcn.vscode-lldb
 code --install-extension james-yu.latex-workshop
+code --install-extension ms-python.python
 ```
 
-**Verify**: all three appear in the extensions list, enabled.
+**Verify**: all of these appear in the extensions list, enabled.
 
 ### If an extension fails to install
 
 Outside mainland China this is almost always a transient network hiccup, not a blocked service — the editor marketplace (VS Code Marketplace or Open VSX) works directly.
 
-1. **Install from the built-in marketplace** — click the Extensions icon and search for clangd / CodeLLDB / LaTeX Workshop.
+1. **Install from the built-in marketplace** — click the Extensions icon and search for clangd / CodeLLDB / LaTeX Workshop / Python.
 2. **Install from the command line** — the `code --install-extension ...` commands above.
 3. **Offline VSIX** — if both of the above fail, download the `.vsix` and use Extensions view → `...` → **Install from VSIX...**
    - clangd: https://open-vsx.org/extension/llvm-vs-code-extensions/vscode-clangd
    - CodeLLDB: https://open-vsx.org/extension/vadimcn/vscode-lldb
    - LaTeX Workshop: https://open-vsx.org/extension/james-yu/latex-workshop
+   - Python: https://open-vsx.org/extension/ms-python/python
 
 4. **Installed but not working** — clangd and CodeLLDB download their own binaries from **GitHub Releases** on first run, which is a normal outbound connection. If it fails, retry; if you are behind a corporate proxy, set `HTTP_PROXY` / `HTTPS_PROXY` and restart the editor.
    - **clangd**: download `clangd-windows-*.zip`, unzip it, and point `clangd.path` in `settings.json` at `clangd.exe`
    - **CodeLLDB**: retry, or place the platform binary manually
 
+The Python extension needs no extra download — debugpy ships with it.
+
 **Verify**: after restarting the editor the extensions show as enabled; you get C/C++ completion and F5 starts a debug session.
 
 ---
 
-## Step 4: Write the project config
+## Step 5: Write the project config
 
 1. Open a terminal in your project folder
 2. Run (replace `<skill-dir>` and `<project-dir>` with real paths):
@@ -116,12 +143,13 @@ The script self-checks your machine and writes `build.ps1` plus the three files 
 
 ---
 
-## Step 5: End-to-end check
+## Step 6: End-to-end check
 
 1. Copy `<skill-dir>\assets\samples\hello.c` into the project root
 2. Open the project folder in the editor, open `hello.c`, press **F5**
 3. The terminal should print `Hello World!`
 
+Python: copy `hello.py` over and press **F5** — the terminal should print two Hello lines.
 LaTeX: copy `sample.tex` over, press **Ctrl+Alt+B**, and `sample.pdf` should appear.
 
 ---
@@ -138,3 +166,6 @@ LaTeX: copy `sample.tex` over, press **Ctrl+Alt+B**, and `sample.pdf` should app
 | Chinese LaTeX fails | You must use `xelatex` (the default here); do not switch to pdflatex |
 | "File not found" for a path | If a path contains special characters or quotes, use a relative path instead of embedding an absolute path in the command |
 | A pile of files appears after building | Normal MSVC outputs (`.exe/.obj/.pdb/.ilk`), and they are all under `build\`; delete `build\` to clean up |
+| Typing `python` opens the Microsoft Store | Windows "app execution alias" placeholder; turn it off under Settings → Apps → Advanced app settings → App execution aliases, then install CPython with Add to PATH |
+| F5 finds no Python interpreter | Python was installed without **Add python.exe to PATH**; reinstall with it checked, or restart the editor |
+| Python F5 debug does not start | Install the **Python extension** (`ms-python.python`), which brings `debugpy`; then restart the editor |

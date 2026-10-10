@@ -1,5 +1,5 @@
-# 探测本机 C/C++/LaTeX 环境并把一键编译调试配置写入目标项目目录
-# Detect the local C/C++/LaTeX toolchain and write the build & debug config into a project folder.
+# 探测本机 C/C++/Python/LaTeX 环境并把一键编译调试配置写入目标项目目录
+# Detect the local C/C++/Python/LaTeX toolchain and write the build & debug config into a project folder.
 # 零基础用户：先跑 -Guide 看逐步安装指引，装完再带 -Target 跑一次
 # Zero-basis users: run -Guide first, then re-run with -Target after installing.
 param(
@@ -40,11 +40,20 @@ $M = @{
         NoTarget        = '缺少 -Target 参数（要写入配置的项目目录）'
         NoTargetHint    = '想看零基础安装指引，请加 -Guide（无需 -Target）'
         Written         = '已写入配置: {0}'
-        NextStep        = '下一步: 放入 .c/.cpp 按 F5（多文件加 -All），或放入 .tex 按 Ctrl+Alt+B'
-        Samples         = '示例可复制 assets\samples\ 下的 hello.c / hello.cpp / sample.tex'
+        NextStep        = '下一步: 放入 .c/.cpp 或 .py 按 F5；.tex 按 Ctrl+Alt+B（C/C++ 多文件加 -All）'
+        Samples         = '示例可复制 assets\samples\ 下的 hello.c / hello.cpp / hello.py / sample.tex'
+        PyFound         = 'Python: {0}'
+        PyVer           = 'Python 版本: {0}'
+        PyMissing       = '未找到 Python（Python 无法运行）'
+        PyAuto          = '自动安装: winget install Python.Python.3.13'
+        PyManual        = '手动安装: https://www.python.org/downloads/ （安装时务必勾选 Add python.exe to PATH）'
+        PySkip          = '仅用 C/C++/LaTeX 可忽略此项'
         D_clangd        = 'clangd（C/C++ 补全/报错）'
-        D_lldb          = 'CodeLLDB（F5 调试）'
+        D_lldb          = 'CodeLLDB（C/C++ F5 调试）'
         D_latex         = 'LaTeX Workshop（编译/预览）'
+        D_py            = 'Python（F5 调试 Python）'
+        L_cpp           = 'C/C++ 编译并调试 (F5)'
+        L_py            = 'Python 运行并调试 (F5)'
     }
     en = @{
         Checking        = '==== Environment self-check ===='
@@ -73,11 +82,20 @@ $M = @{
         NoTarget        = 'Missing -Target parameter (the project folder to write config into)'
         NoTargetHint    = 'For the zero-basis install guide, add -Guide (no -Target needed)'
         Written         = 'Config written: {0}'
-        NextStep        = 'Next: add a .c/.cpp file and press F5 (add -All for multi-file), or a .tex file and press Ctrl+Alt+B'
-        Samples         = 'Samples: copy hello.c / hello.cpp / sample.tex from assets\samples\'
+        NextStep        = 'Next: add a .c/.cpp or .py file and press F5; press Ctrl+Alt+B for .tex (add -All for multi-file C/C++)'
+        Samples         = 'Samples: copy hello.c / hello.cpp / hello.py / sample.tex from assets\samples\'
+        PyFound         = 'Python: {0}'
+        PyVer           = 'Python version: {0}'
+        PyMissing       = 'Python not found (Python cannot run)'
+        PyAuto          = 'Automatic: winget install Python.Python.3.13'
+        PyManual        = 'Manual: https://www.python.org/downloads/ (check "Add python.exe to PATH" during install)'
+        PySkip          = 'Ignore this if you only need C/C++ or LaTeX'
         D_clangd        = 'clangd (C/C++ completion and diagnostics)'
-        D_lldb          = 'CodeLLDB (F5 debugging)'
+        D_lldb          = 'CodeLLDB (C/C++ F5 debugging)'
         D_latex         = 'LaTeX Workshop (build and PDF preview)'
+        D_py            = 'Python (F5 debugging for Python)'
+        L_cpp           = 'C/C++ build & debug (F5)'
+        L_py            = 'Python run & debug (F5)'
     }
 }
 $T = $M[$Lang]
@@ -98,18 +116,26 @@ $G = @{
         @{ c = '';       t = '  手动: 下载 https://miktex.org/download （Install for me only 即可）' }
         @{ c = '';       t = '  验证: 重开终端执行 xelatex --version' }
         @{ c = 'DarkGray'; t = '        不需要 LaTeX 可跳过此步，只用 C/C++' }
-        @{ c = 'Yellow'; t = '步骤 3  安装编辑器扩展（在扩展市场搜索安装）' }
+        @{ c = 'Yellow'; t = '步骤 3  安装 Python（提供 python.exe，用于 .py 脚本）' }
+        @{ c = '';       t = '  自动: winget install Python.Python.3.13' }
+        @{ c = '';       t = '  手动: 下载 https://www.python.org/downloads/' }
+        @{ c = 'DarkGray'; t = '        安装时务必勾选 Add python.exe to PATH' }
+        @{ c = '';       t = '  验证: 重开终端执行 python --version 能看到版本' }
+        @{ c = 'DarkGray'; t = '        不需要 Python 可跳过此步' }
+        @{ c = 'Yellow'; t = '步骤 4  安装编辑器扩展（在扩展市场搜索安装）' }
         @{ c = '';       t = '  clangd          ID: llvm-vs-code-extensions.vscode-clangd   （C/C++ 补全报错）' }
-        @{ c = '';       t = '  CodeLLDB        ID: vadimcn.vscode-lldb                     （F5 调试）' }
+        @{ c = '';       t = '  CodeLLDB        ID: vadimcn.vscode-lldb                     （C/C++ F5 调试）' }
         @{ c = '';       t = '  LaTeX Workshop  ID: james-yu.latex-workshop                 （LaTeX 编译预览）' }
+        @{ c = '';       t = '  Python          ID: ms-python.python                        （Python 运行调试）' }
         @{ c = 'DarkGray'; t = '        或命令行: code --install-extension <上面的ID>' }
         @{ c = 'DarkGray'; t = '        国内版: 直接在 Trae 内置市场搜装即可（走国内镜像，无需翻墙）' }
         @{ c = 'DarkGray'; t = '        仍装不上: 从 Open VSX 下载 .vsix 后用 Install from VSIX... 离线安装' }
-        @{ c = 'Yellow'; t = '步骤 4  写入项目配置' }
+        @{ c = 'Yellow'; t = '步骤 5  写入项目配置' }
         @{ c = '';       t = '  去掉 -Guide，带 -Target 再运行本脚本一次：' }
         @{ c = 'DarkGray'; t = '        ... -File "<skill目录>\scripts\new-project.ps1" -Target "<项目目录>"' }
-        @{ c = 'Yellow'; t = '步骤 5  验证' }
+        @{ c = 'Yellow'; t = '步骤 6  验证' }
         @{ c = '';       t = '  复制 assets\samples\hello.c 到项目根，打开按 F5 -> 输出 Hello World!' }
+        @{ c = '';       t = '  复制 assets\samples\hello.py 过去，打开按 F5 -> 运行 Python' }
         @{ c = '';       t = '  复制 assets\samples\sample.tex 过去，按 Ctrl+Alt+B -> 生成 PDF' }
         @{ c = 'DarkGray'; t = '通用提示: 装完任何新工具后请[重启编辑器]，否则可能读不到新的 PATH。' }
         @{ c = 'Cyan';   t = '===================================================' }
@@ -129,17 +155,25 @@ $G = @{
         @{ c = '';       t = '  Manual: download https://miktex.org/download ("Install for me only" is fine)' }
         @{ c = '';       t = '  Verify: open a new terminal and run xelatex --version' }
         @{ c = 'DarkGray'; t = '        Skip this step if you only need C/C++' }
-        @{ c = 'Yellow'; t = 'Step 3  Install the editor extensions (search in the marketplace)' }
+        @{ c = 'Yellow'; t = 'Step 3  Install Python (provides python.exe for .py scripts)' }
+        @{ c = '';       t = '  Auto: winget install Python.Python.3.13' }
+        @{ c = '';       t = '  Manual: download https://www.python.org/downloads/' }
+        @{ c = 'DarkGray'; t = '        During install, make sure to check "Add python.exe to PATH"' }
+        @{ c = '';       t = '  Verify: open a new terminal and run python --version' }
+        @{ c = 'DarkGray'; t = '        Skip this step if you do not need Python' }
+        @{ c = 'Yellow'; t = 'Step 4  Install the editor extensions (search in the marketplace)' }
         @{ c = '';       t = '  clangd          ID: llvm-vs-code-extensions.vscode-clangd   (C/C++ completion and diagnostics)' }
-        @{ c = '';       t = '  CodeLLDB        ID: vadimcn.vscode-lldb                     (F5 debugging)' }
+        @{ c = '';       t = '  CodeLLDB        ID: vadimcn.vscode-lldb                     (C/C++ F5 debugging)' }
         @{ c = '';       t = '  LaTeX Workshop  ID: james-yu.latex-workshop                 (LaTeX build and PDF preview)' }
+        @{ c = '';       t = '  Python          ID: ms-python.python                        (Python run and debug)' }
         @{ c = 'DarkGray'; t = '        Or from the CLI: code --install-extension <ID>' }
         @{ c = 'DarkGray'; t = '        Marketplace not working: download the .vsix from Open VSX and use Install from VSIX...' }
-        @{ c = 'Yellow'; t = 'Step 4  Write the project config' }
+        @{ c = 'Yellow'; t = 'Step 5  Write the project config' }
         @{ c = '';       t = '  Re-run this script without -Guide, with -Target:' }
         @{ c = 'DarkGray'; t = '        ... -File "<skill-dir>\scripts\new-project.ps1" -Target "<project-dir>"' }
-        @{ c = 'Yellow'; t = 'Step 5  Verify' }
+        @{ c = 'Yellow'; t = 'Step 6  Verify' }
         @{ c = '';       t = '  Copy assets\samples\hello.c into the project root, open it and press F5 -> Hello World!' }
+        @{ c = '';       t = '  Copy assets\samples\hello.py over, open it and press F5 -> Python runs' }
         @{ c = '';       t = '  Copy assets\samples\sample.tex and press Ctrl+Alt+B -> a PDF is generated' }
         @{ c = 'DarkGray'; t = 'General tip: after installing any new tool, [restart the editor] so the new PATH is picked up.' }
         @{ c = 'Cyan';   t = '=======================================================================' }
@@ -231,7 +265,38 @@ if ($engines.Count -eq 0) {
     }
 }
 
-# --- 3. 编辑器扩展 ---
+# --- 3. Python ---
+$pyExe = $null
+$pyCmd = Get-Command python -ErrorAction SilentlyContinue
+# 排除 Windows 自带的应用执行别名占位（WindowsApps\python.exe），它并非真正的解释器
+if ($pyCmd -and $pyCmd.Source -notmatch '\\WindowsApps\\') { $pyExe = $pyCmd.Source }
+if (-not $pyExe) {
+    $pyLauncher = Get-Command py -ErrorAction SilentlyContinue
+    if ($pyLauncher) {
+        $p = & py -c "import sys;print(sys.executable)" 2>$null
+        if ($p) { $pyExe = ($p -split "`r?`n" | Where-Object { $_ } | Select-Object -First 1) }
+    }
+}
+if (-not $pyExe) {
+    foreach ($p in @(
+        (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python313\python.exe'),
+        (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python312\python.exe'),
+        'D:\Program Files\Python\python.exe',
+        'C:\Program Files\Python313\python.exe'
+    )) { if (Test-Path $p) { $pyExe = $p; break } }
+}
+if ($pyExe) {
+    Say OK ($T.PyFound -f $pyExe)
+    $pyVer = (& $pyExe --version 2>&1) -join ''
+    if ($pyVer) { Say OK ($T.PyVer -f ($pyVer -replace '^Python\s*', '')) }
+} else {
+    Say WARN ($T.PyMissing)
+    Hint ($T.PyAuto)
+    Hint ($T.PyManual)
+    Hint ($T.PySkip)
+}
+
+# --- 4. 编辑器扩展 ---
 $extRoots = @()
 foreach ($d in @('.trae-cn', '.trae', '.vscode')) {
     $p = Join-Path $env:USERPROFILE "$d\extensions"
@@ -241,6 +306,7 @@ $need = @{
     'llvm-vs-code-extensions.vscode-clangd' = $T.D_clangd
     'vadimcn.vscode-lldb'                   = $T.D_lldb
     'james-yu.latex-workshop'               = $T.D_latex
+    'ms-python.python'                      = $T.D_py
 }
 foreach ($id in $need.Keys) {
     $hit = $false
@@ -258,26 +324,34 @@ foreach ($id in $need.Keys) {
 
 if ($CheckOnly) { Write-Host ($T.CheckDone) -ForegroundColor Cyan; exit 0 }
 
-# --- 4. 写入配置 ---
+# --- 5. 写入配置 ---
 $assets = Join-Path (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)) 'assets'
 if (-not (Test-Path $Target)) { New-Item -ItemType Directory -Path $Target -Force | Out-Null }
 $Target = (Resolve-Path $Target).Path
 $vscode = Join-Path $Target '.vscode'
 New-Item -ItemType Directory -Path $vscode -Force | Out-Null
 
-Copy-Item (Join-Path $assets 'build.ps1')   (Join-Path $Target  'build.ps1')  -Force
-Copy-Item (Join-Path $assets 'launch.json') (Join-Path $vscode 'launch.json') -Force
+Copy-Item (Join-Path $assets 'build.ps1') (Join-Path $Target 'build.ps1') -Force
+
+# launch.json：按 -Lang 本地化两个调试配置名 / localize the two debug config names
+$launch = Get-Content (Join-Path $assets 'launch.json') -Raw | ConvertFrom-Json
+$launch.configurations[0].name = $T.L_cpp
+$launch.configurations[1].name = $T.L_py
+$launch | ConvertTo-Json -Depth 10 | Set-Content (Join-Path $vscode 'launch.json') -Encoding UTF8
 
 # tasks.json：按 -Lang 决定编译脚本的终端输出语言 / inject output language into the build task
 $tasks = Get-Content (Join-Path $assets 'tasks.json') -Raw | ConvertFrom-Json
 if ($Lang -ne 'zh') { $tasks.tasks[0].args += @('-Lang', $Lang) }
 $tasks | ConvertTo-Json -Depth 10 | Set-Content (Join-Path $vscode 'tasks.json') -Encoding UTF8
 
-# settings.json：注入 clangd 的 MSVC 头文件路径（修 C/C++ 红波浪线）
+# settings.json：注入 clangd 的 MSVC 头文件路径（修 C/C++ 红波浪线）+ Python 解释器路径
 $settings = Get-Content (Join-Path $assets 'settings.json') -Raw | ConvertFrom-Json
 if ($clExe) {
     $driver = $clExe.FullName.Replace('\', '/')
     $settings | Add-Member -NotePropertyName 'clangd.arguments' -NotePropertyValue @("--query-driver=$driver") -Force
+}
+if ($pyExe) {
+    $settings | Add-Member -NotePropertyName 'python.defaultInterpreterPath' -NotePropertyValue $pyExe -Force
 }
 $settings | ConvertTo-Json -Depth 10 | Set-Content (Join-Path $vscode 'settings.json') -Encoding UTF8
 

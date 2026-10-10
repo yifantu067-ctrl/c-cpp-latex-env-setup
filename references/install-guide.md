@@ -1,7 +1,7 @@
 # 零基础安装指南（从一台没有任何编译器的电脑开始）
 
 适用：Windows 10 / 11。所有安装**只需做一次**，之后新建项目直接套用配置即可。
-本文按顺序照做，每一步末尾都有「怎么验证成功」。全程约 4 次安装。
+本文按顺序照做，每一步末尾都有「怎么验证成功」。全程约 5 次安装（Python 可选）。
 
 > 熟练后可用脚本一行看指引：
 > `powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-project.ps1" -Guide`
@@ -62,15 +62,38 @@ winget install MiKTeX.MiKTeX
 
 ---
 
-## 步骤 3：安装 3 个编辑器扩展
+## 步骤 3：安装 Python（可选，用于 .py 脚本）
+
+**作用**：提供 `python.exe`，用于运行和调试 Python 文件。
+
+**方式 A · 自动**
+
+```powershell
+winget install Python.Python.3.13
+```
+
+**方式 B · 手动**
+1. 打开 https://www.python.org/downloads/ 下载安装器
+2. 安装第一步**务必勾选** **Add python.exe to PATH**（不勾选，编辑器和终端都找不到）
+
+**验证**
+- **重开一个终端**，执行 `python --version`，能看到版本号
+- 若输入 `python` 却弹出 Microsoft Store：到「设置 → 应用 → 高级应用设置 → 应用执行别名」把 `python.exe` / `python3.exe` 关掉
+
+> 不需要 Python 可跳过本步。
+
+---
+
+## 步骤 4：安装编辑器扩展
 
 在 Trae / VS Code 的**扩展市场**（左侧方块图标）搜索并安装：
 
 | 扩展名 | 安装 ID | 作用 |
 |---|---|---|
 | clangd | `llvm-vs-code-extensions.vscode-clangd` | C/C++ 补全、错误提示 |
-| CodeLLDB | `vadimcn.vscode-lldb` | F5 调试（launch.json 依赖它） |
+| CodeLLDB | `vadimcn.vscode-lldb` | C/C++ F5 调试（launch.json 依赖它） |
 | LaTeX Workshop | `james-yu.latex-workshop` | LaTeX 编译、PDF 预览 |
+| Python | `ms-python.python` | Python 运行与 F5 调试（自带 debugpy） |
 
 **命令行安装**（编辑器已加入 PATH 时）：
 
@@ -78,9 +101,10 @@ winget install MiKTeX.MiKTeX
 code --install-extension llvm-vs-code-extensions.vscode-clangd
 code --install-extension vadimcn.vscode-lldb
 code --install-extension james-yu.latex-workshop
+code --install-extension ms-python.python
 ```
 
-**验证**：扩展列表里能看到这三个已启用。
+**验证**：扩展列表里能看到这几个已启用。
 
 ### 扩展安装失败怎么办（国内网络重点看）
 
@@ -98,6 +122,7 @@ code --install-extension james-yu.latex-workshop
 code --install-extension llvm-vs-code-extensions.vscode-clangd
 code --install-extension vadimcn.vscode-lldb
 code --install-extension james-yu.latex-workshop
+code --install-extension ms-python.python
 ```
 
 **3) 离线 VSIX 安装**（市场、命令行都失败时）
@@ -105,6 +130,7 @@ Trae 的市场源是 **Open VSX**，优先从这里下 `.vsix`：
 - clangd：https://open-vsx.org/extension/llvm-vs-code-extensions/vscode-clangd
 - CodeLLDB：https://open-vsx.org/extension/vadimcn/vscode-lldb
 - LaTeX Workshop：https://open-vsx.org/extension/james-yu/latex-workshop
+- Python：https://open-vsx.org/extension/ms-python/python
 
 装法：编辑器内扩展面板右上 `...` → **Install from VSIX...** → 选刚下载的文件
 （或命令行 `code --install-extension <文件路径>.vsix`）
@@ -114,13 +140,15 @@ Trae 的市场源是 **Open VSX**，优先从这里下 `.vsix`：
 - **clangd**：下载 clangd 服务端二进制。可手动下载 `clangd-windows-*.zip`，解压后在 `settings.json` 里用 `clangd.path` 指向 `clangd.exe`
 - **CodeLLDB**：下载 lldb 平台二进制。可配代理重试，或手动放置
 
+Python 扩展不需要额外二进制（debugpy 随扩展一起分发），装上即可用。
+
 需要代理时：设系统环境变量 `HTTP_PROXY`、`HTTPS_PROXY`（例如 `http://127.0.0.1:7890`），然后**重启编辑器**。
 
 **验证**：重启编辑器后扩展显示已启用；C/C++ 有补全、按 F5 能进调试。
 
 ---
 
-## 步骤 4：写入项目配置
+## 步骤 5：写入项目配置
 
 1. 在项目文件夹里打开终端
 2. 执行（把 `<skill目录>`、`<项目目录>` 换成实际路径）：
@@ -134,12 +162,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-p
 
 ---
 
-## 步骤 5：验证端到端跑通
+## 步骤 6：验证端到端跑通
 
 1. 把 `<skill目录>\assets\samples\hello.c` 复制到项目根
 2. 用编辑器打开该项目文件夹，打开 `hello.c`，按 **F5**
 3. 终端应输出 `Hello World!`
 
+Python：把 `hello.py` 复制过去打开，按 **F5**，终端应输出两行 Hello。
 LaTeX：把 `sample.tex` 复制过去，按 **Ctrl+Alt+B**，应生成 `sample.pdf`。
 
 ---
@@ -156,3 +185,6 @@ LaTeX：把 `sample.tex` 复制过去，按 **Ctrl+Alt+B**，应生成 `sample.p
 | 中文 LaTeX 报错 | 必须用 `xelatex`（本 skill 已默认），不要改成 pdflatex |
 | 路径报「文件不存在」 | 路径含特殊字符/单引号时，用相对路径，别把绝对路径拼进命令 |
 | 编译后目录里多出一堆文件 | 正常，都是 MSVC 产物（`.exe/.obj/.pdb/.ilk`），且已统一放在 `build\` 下；删掉 `build\` 即可清理 |
+| `python` 弹出 Microsoft Store | Windows 的「应用执行别名」占位；设置 → 应用 → 高级应用设置 → 应用执行别名，关掉 `python.exe`/`python3.exe`，再装官方 CPython 并勾选 Add to PATH |
+| Python 按 F5 没有解释器 | 装 Python 时未勾选 Add python.exe to PATH；重装勾选，或重启编辑器 |
+| Python 无法 F5 调试 | 需装 **Python 扩展**（`ms-python.python`），它自带 `debugpy`；装上后重启编辑器 |

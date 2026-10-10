@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ 编译并调试 (F5)",
+            "name": "C/C++ 编译并调试 (F5)",
             "type": "lldb",
             "request": "launch",
             "program": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
@@ -12,6 +12,15 @@
             "terminal": "integrated",
             "stopOnEntry": false,
             "sourceLanguages": ["cpp", "c"]
+        },
+        {
+            "name": "Python 运行并调试 (F5)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${fileDirname}",
+            "justMyCode": true
         }
     ]
 }

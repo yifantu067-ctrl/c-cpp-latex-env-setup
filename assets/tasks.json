@@ -18,6 +18,16 @@
             },
             "group": { "kind": "build", "isDefault": true },
             "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "run-python",
+            "type": "shell",
+            "command": "python",
+            "args": ["-u", "${relativeFile}"],
+            "options": { "cwd": "${fileDirname}" },
+            "group": "none",
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+            "problemMatcher": []
         }
     ]
 }
