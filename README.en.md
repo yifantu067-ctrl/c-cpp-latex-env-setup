@@ -1,10 +1,10 @@
+[中文](README.md) | [English](README.en.md)
+
 # c-cpp-latex-env-setup
 
 A **TRAE / VS Code skill** that sets up a one-click build & debug environment for **C and C++ (MSVC)** plus **LaTeX (MiKTeX / TeX Live)** on Windows.
 
 When you start a new project it auto-detects the toolchain already on your machine and writes the configs for `F5` (build + debug) and `Ctrl+Alt+B` (build PDF) in one go — and if the machine has nothing installed yet, it walks you through the installs step by step.
-
-> 中文说明见 [README.md](README.md)。
 
 ---
 

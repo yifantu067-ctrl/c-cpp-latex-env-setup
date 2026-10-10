@@ -1,10 +1,10 @@
+[中文](README.md) | [English](README.en.md)
+
 # c-cpp-latex-env-setup
 
 一个 **TRAE / VS Code 技能（Skill）**：在 Windows 上一键配置 **C / C++（MSVC）** 与 **LaTeX（MiKTeX / TeX Live）** 的编译调试环境。
 
 新建项目时自动探测本机编译器，把 `F5`（编译 + 调试）和 `Ctrl+Alt+B`（编译 PDF）的配置一次性写好；电脑上什么都没装时，也能一步步带着装完。
-
-> English version: [README.en.md](README.en.md). / 英文说明见 [README.en.md](README.en.md)。
 
 ---
 
