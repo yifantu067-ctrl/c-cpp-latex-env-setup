@@ -1,10 +1,10 @@
-# cpp-latex-env-setup
+# c-cpp-latex-env-setup
 
 一个 **TRAE / VS Code 技能（Skill）**：在 Windows 上一键配置 **C / C++（MSVC）** 与 **LaTeX（MiKTeX / TeX Live）** 的编译调试环境。
 
 新建项目时自动探测本机编译器，把 `F5`（编译 + 调试）和 `Ctrl+Alt+B`（编译 PDF）的配置一次性写好；电脑上什么都没装时，也能一步步带着装完。
 
-> One-click build & debug setup for C/C++ (MSVC) and LaTeX on Windows, as a TRAE / VS Code skill.
+> English version: [README.en.md](README.en.md). / 英文说明见 [README.en.md](README.en.md)。
 
 ---
 
@@ -33,25 +33,25 @@
 克隆到 Trae 的全局 skills 目录（VS Code 用户把 `.trae-cn` 换成 `.vscode` 或对应目录即可）：
 
 ```powershell
-git clone https://github.com/yifantu067-ctrl/cpp-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\cpp-latex-env-setup"
+git clone https://github.com/yifantu067-ctrl/c-cpp-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup"
 ```
 
-> 不想用 git：直接下载 ZIP 解压，把 `cpp-latex-env-setup` 整个文件夹放进 `%USERPROFILE%\.trae-cn\skills\`。
+> 不想用 git：直接下载 ZIP 解压，把 `c-cpp-latex-env-setup` 整个文件夹放进 `%USERPROFILE%\.trae-cn\skills\`。
 
 ### 2. 零基础先看安装指引
 
 如果电脑上连编译器都没有，先跑 `-Guide`（不需要 `-Target`）：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\cpp-latex-env-setup\scripts\new-project.ps1" -Guide
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Guide
 ```
 
-按终端里的 5 步提示依次安装 Visual Studio、MiKTeX 和编辑器扩展。完整说明见 [references/install-guide.md](references/install-guide.md)。
+按终端里的 5 步提示依次安装 Visual Studio、MiKTeX 和编辑器扩展。完整说明见 [references/install-guide.md](references/install-guide.md)（英文版：[install-guide.en.md](references/install-guide.en.md)）。
 
 ### 3. 给项目写入配置
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\cpp-latex-env-setup\scripts\new-project.ps1" -Target "D:\你的项目目录"
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Target "D:\你的项目目录"
 ```
 
 脚本会先把本机环境自检一遍（彩色 `OK / WARN / FAIL`，缺什么就打印安装命令），然后写入：
@@ -60,6 +60,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\s
 - `tasks.json`、`launch.json`、`settings.json` → 项目 `.vscode/`
 
 只想自检、不写文件：加 `-CheckOnly`。
+英文终端输出：加 `-Lang en`（默认中文）。
 
 ### 4. 验证跑通
 
@@ -79,18 +80,20 @@ LaTeX 则把 `sample.tex` 复制过去，按 **Ctrl+Alt+B**，应生成 `sample.
 ## 目录结构
 
 ```
-cpp-latex-env-setup/
-├── SKILL.md                     # 技能入口：说明 + 踩坑表 + 维护约定
+c-cpp-latex-env-setup/
+├── SKILL.md                        # 技能入口：说明 + 踩坑表 + 维护约定
+├── README.md / README.en.md        # 仓库首页说明（中文 / English）
 ├── scripts/
-│   └── new-project.ps1          # 环境自检 + 一键写入配置（-Guide / -CheckOnly）
+│   └── new-project.ps1             # 环境自检 + 一键写入配置（-Guide / -CheckOnly / -Lang）
 ├── references/
-│   └── install-guide.md         # 零基础逐步安装指南
+│   ├── install-guide.md            # 零基础逐步安装指南（中文）
+│   └── install-guide.en.md         # Zero-basis install guide (English)
 └── assets/
-    ├── build.ps1                # 写入项目：MSVC 编译脚本（单文件 / 多文件）
-    ├── tasks.json               # 写入 .vscode：F5 前的编译任务
-    ├── launch.json              # 写入 .vscode：CodeLLDB 调试
-    ├── settings.json            # 写入 .vscode：LaTeX Workshop + clangd
-    └── samples/                 # 冒烟测试用示例
+    ├── build.ps1                   # 写入项目：MSVC 编译脚本（单文件 / 多文件）
+    ├── tasks.json                  # 写入 .vscode：F5 前的编译任务
+    ├── launch.json                 # 写入 .vscode：CodeLLDB 调试
+    ├── settings.json               # 写入 .vscode：LaTeX Workshop + clangd
+    └── samples/                    # 冒烟测试用示例
         ├── hello.c
         ├── hello.cpp
         └── sample.tex

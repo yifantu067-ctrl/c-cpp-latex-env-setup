@@ -1,6 +1,6 @@
 ---
-name: cpp-latex-env-setup
-description: 自动探测并配置 C / C++（MSVC，同时支持 .c 与 .cpp）与 LaTeX（MiKTeX/TeX Live）的一键编译调试环境，新建项目即写入 F5 与 Ctrl+Alt+B 配置。支持零基础逐步引导安装。当用户新建 C/C++ 或 LaTeX 项目、配置或修复开发环境、或需要从零安装编译器时使用。不用于其他语言（如 Python/Java）。
+name: c-cpp-latex-env-setup
+description: Set up one-click build and debug for C and C++ (MSVC) and LaTeX (MiKTeX or TeX Live) on Windows, auto-detecting VS and TeX and writing F5 and Ctrl+Alt+B configs, with zero-install guidance. 自动探测并配置 C/C++ 与 LaTeX 一键编译调试环境，支持零基础安装。Use when creating a C/C++ or LaTeX project or fixing the toolchain. 不用于其他语言（如 Python/Java）。
 ---
 
 # C / C++ / LaTeX 环境配置
@@ -11,12 +11,14 @@ description: 自动探测并配置 C / C++（MSVC，同时支持 .c 与 .cpp）�
 
 **国内版 Trae 适用性**：`.vscode/` 配置通用（Trae 是 VS Code 内核），**编译、运行、写代码全程离线**。装扩展时 Trae 国内版市场走国内镜像（`api.trae.com.cn` / `open-vsx.trae.com.cn`），**无需翻墙**；唯一可能需代理的是 clangd / CodeLLDB 首次启动从 GitHub 下二进制。
 
+**English**: see [README.en.md](README.en.md) and the full [English install guide](references/install-guide.en.md). Outside mainland China everything is direct — the VS Code Marketplace or Open VSX installs the extensions normally, and clangd / CodeLLDB fetch their binaries from GitHub Releases without a proxy. Add `-Lang en` to the script for English terminal output.
+
 ## 零基础？照这个走
 
 即使目标电脑**连编译器都没有**，本 skill 也能一步步带到跑通：
 
-1. 先跑 `-Guide`（**不需要** `-Target`），按终端里 5 步提示依次安装
-2. 完整逐步说明见 `references/install-guide.md`：含 winget 自动安装命令、下载链接、安装时勾选项、每步验证方法
+1. 先跑 `-Guide`（**不需要** `-Target`），按终端里 5 步提示依次安装；国际用户加 `-Lang en` 得到英文提示
+2. 完整逐步说明见 `references/install-guide.md`（中文）或 `references/install-guide.en.md`（English）：含 winget 自动安装命令、下载链接、安装时勾选项、每步验证方法
 3. 装完再带 `-Target` 跑一次，自检逐项给出 `OK/WARN/FAIL`
 4. 复制 `assets/samples/hello.c` 打开按 F5 验证
 
@@ -25,10 +27,12 @@ description: 自动探测并配置 C / C++（MSVC，同时支持 .c 与 .cpp）�
 ## skill 结构
 
 ```
-cpp-latex-env-setup\
-├── SKILL.md                     # 本文件：说明 + 踩坑 + 维护约定
-├── scripts\new-project.ps1      # 自检 + 一键写入配置（-Guide / -CheckOnly）
-├── references\install-guide.md  # 零基础逐步安装指南
+c-cpp-latex-env-setup\
+├── SKILL.md                        # 本文件：说明 + 踩坑 + 维护约定
+├── README.md / README.en.md        # 仓库首页说明（中文 / English）
+├── scripts\new-project.ps1         # 自检 + 一键写入配置（-Guide / -CheckOnly / -Lang）
+├── references\install-guide.md     # 零基础逐步安装指南（中文）
+├── references\install-guide.en.md  # Zero-basis install guide (English)
 └── assets\
     ├── build.ps1                # 写入项目：MSVC 编译脚本（单文件 / 多文件）
     ├── tasks.json               # 写入 .vscode：F5 前的编译任务
@@ -51,6 +55,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-p
 
 # 只做环境自检，不写文件
 powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-project.ps1" -Target "." -CheckOnly
+
+# 英文输出（国际用户）
+powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-project.ps1" -Target "<新项目绝对路径>" -Lang en
 ```
 
 写入时脚本会：自检并彩色标注 `OK/WARN/FAIL`（缺什么就打印对应安装命令）→ 复制 `assets/build.ps1` 到项目根 → 复制 `tasks.json`、`launch.json`、`settings.json` 到 `.vscode/` → 把 MSVC 的 cl.exe 路径注入 `clangd.arguments`（消除头文件红波浪线）。
