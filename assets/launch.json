@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ 编译并调试 (F5)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "cwd": "${fileDirname}",
+            "preLaunchTask": "build",
+            "terminal": "integrated",
+            "stopOnEntry": false,
+            "sourceLanguages": ["cpp", "c"]
+        }
+    ]
+}
