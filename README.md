@@ -1,6 +1,6 @@
 [中文](README.md) | [English](README.en.md)
 
-# c-cpp-latex-env-setup
+# c-cpp-python-latex-env-setup
 
 一个 **TRAE / VS Code 技能（Skill）**：在 Windows 上一键配置 **C / C++（MSVC）**、**Python** 与 **LaTeX（MiKTeX / TeX Live）** 的编译调试环境。
 
@@ -34,17 +34,17 @@
 克隆到 Trae 的全局 skills 目录（VS Code 用户把 `.trae-cn` 换成 `.vscode` 或对应目录即可）：
 
 ```powershell
-git clone https://github.com/yifantu067-ctrl/c-cpp-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup"
+git clone https://github.com/yifantu067-ctrl/c-cpp-python-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup"
 ```
 
-> 不想用 git：直接下载 ZIP 解压，把 `c-cpp-latex-env-setup` 整个文件夹放进 `%USERPROFILE%\.trae-cn\skills\`。
+> 不想用 git：直接下载 ZIP 解压，把 `c-cpp-python-latex-env-setup` 整个文件夹放进 `%USERPROFILE%\.trae-cn\skills\`。
 
 ### 2. 零基础先看安装指引
 
 如果电脑上连编译器都没有，先跑 `-Guide`（不需要 `-Target`）：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Guide
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup\scripts\new-project.ps1" -Guide
 ```
 
 按终端里的 6 步提示依次安装 Visual Studio、MiKTeX、Python 和编辑器扩展。完整说明见 [references/install-guide.md](references/install-guide.md)（英文版：[install-guide.en.md](references/install-guide.en.md)）。
@@ -52,7 +52,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\s
 ### 3. 给项目写入配置
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Target "D:\你的项目目录"
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup\scripts\new-project.ps1" -Target "D:\你的项目目录"
 ```
 
 脚本会先把本机环境自检一遍（彩色 `OK / WARN / FAIL`，缺什么就打印安装命令），然后写入：
@@ -84,7 +84,7 @@ Python 把 `hello.py` 复制过去按 **F5**；LaTeX 把 `sample.tex` 复制过�
 ## 目录结构
 
 ```
-c-cpp-latex-env-setup/
+c-cpp-python-latex-env-setup/
 ├── SKILL.md                        # 技能入口：说明 + 踩坑表 + 维护约定
 ├── README.md / README.en.md        # 仓库首页说明（中文 / English）
 ├── scripts/

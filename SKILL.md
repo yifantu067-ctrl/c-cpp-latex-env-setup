@@ -1,6 +1,6 @@
 ---
-name: c-cpp-latex-env-setup
-description: Set up one-click build and debug for C and C++ (MSVC), Python and LaTeX (MiKTeX or TeX Live) on Windows, auto-detecting VS, Python and TeX and writing F5 and Ctrl+Alt+B configs, with zero-install guidance. 自动探测并配置 C/C++、Python 与 LaTeX 一键编译调试环境，支持零基础安装。Use when creating a C/C++, Python or LaTeX project or fixing the toolchain. 不用于 Java 等其他语言。
+name: c-cpp-python-latex-env-setup
+description: Set up one-click build and debug for C, C++ (MSVC), Python and LaTeX (MiKTeX or TeX Live) on Windows, auto-detecting VS, Python and TeX and writing F5 and Ctrl+Alt+B configs, with zero-install guidance. 自动探测并配置 C/C++、Python 与 LaTeX 一键编译调试环境，支持零基础安装。Use when creating a C/C++, Python or LaTeX project or fixing the toolchain. 不用于 Java 等其他语言。
 ---
 
 # C / C++ / Python / LaTeX 环境配置
@@ -27,7 +27,7 @@ description: Set up one-click build and debug for C and C++ (MSVC), Python and L
 ## skill 结构
 
 ```
-c-cpp-latex-env-setup\
+c-cpp-python-latex-env-setup\
 ├── SKILL.md                        # 本文件：说明 + 踩坑 + 维护约定
 ├── README.md / README.en.md        # 仓库首页说明（中文 / English）
 ├── scripts\new-project.ps1         # 自检 + 一键写入配置（-Guide / -CheckOnly / -Lang）

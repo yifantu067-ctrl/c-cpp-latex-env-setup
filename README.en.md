@@ -1,6 +1,6 @@
 [中文](README.md) | [English](README.en.md)
 
-# c-cpp-latex-env-setup
+# c-cpp-python-latex-env-setup
 
 A **TRAE / VS Code skill** that sets up a one-click build & debug environment for **C and C++ (MSVC)**, **Python** and **LaTeX (MiKTeX / TeX Live)** on Windows.
 
@@ -36,17 +36,17 @@ Everything runs offline. Extensions install from the VS Code Marketplace or Open
 Clone into the editor's global skills directory (for VS Code use your own data folder instead of `.trae-cn`):
 
 ```powershell
-git clone https://github.com/yifantu067-ctrl/c-cpp-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup"
+git clone https://github.com/yifantu067-ctrl/c-cpp-python-latex-env-setup.git "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup"
 ```
 
-> No git? Download the ZIP, extract it, and drop the `c-cpp-latex-env-setup` folder into `%USERPROFILE%\.trae-cn\skills\`.
+> No git? Download the ZIP, extract it, and drop the `c-cpp-python-latex-env-setup` folder into `%USERPROFILE%\.trae-cn\skills\`.
 
 ### 2. Starting from nothing: read the install guide
 
 If the machine has no compiler yet, run with `-Guide` (no `-Target` needed):
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Guide -Lang en
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup\scripts\new-project.ps1" -Guide -Lang en
 ```
 
 Follow the 6 steps it prints to install Visual Studio, MiKTeX, Python and the editor extensions. Full details: [references/install-guide.en.md](references/install-guide.en.md).
@@ -54,7 +54,7 @@ Follow the 6 steps it prints to install Visual Studio, MiKTeX, Python and the ed
 ### 3. Write the project config
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-latex-env-setup\scripts\new-project.ps1" -Target "D:\your-project" -Lang en
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.trae-cn\skills\c-cpp-python-latex-env-setup\scripts\new-project.ps1" -Target "D:\your-project" -Lang en
 ```
 
 The script first self-checks the machine (colour-coded `OK / WARN / FAIL`, printing the install command for anything missing), then writes:
@@ -86,7 +86,7 @@ All build outputs go into a **`build\`** folder in the project (`.exe` / `.obj` 
 ## Layout
 
 ```
-c-cpp-latex-env-setup/
+c-cpp-python-latex-env-setup/
 ├── SKILL.md                        # Skill entry: notes, pitfalls, maintenance rules
 ├── README.md / README.en.md        # Repo homepage (Chinese / English)
 ├── scripts/
