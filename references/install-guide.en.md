@@ -137,3 +137,4 @@ LaTeX: copy `sample.tex` over, press **Ctrl+Alt+B**, and `sample.pdf` should app
 | MiKTeX says `User/administrator updates out-of-sync` | Harmless for PDF output; run MiKTeX Console as administrator and update to clear it |
 | Chinese LaTeX fails | You must use `xelatex` (the default here); do not switch to pdflatex |
 | "File not found" for a path | If a path contains special characters or quotes, use a relative path instead of embedding an absolute path in the command |
+| A pile of files appears after building | Normal MSVC outputs (`.exe/.obj/.pdb/.ilk`), and they are all under `build\`; delete `build\` to clean up |

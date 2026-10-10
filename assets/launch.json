@@ -5,7 +5,7 @@
             "name": "C++ 编译并调试 (F5)",
             "type": "lldb",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
             "args": [],
             "cwd": "${fileDirname}",
             "preLaunchTask": "build",

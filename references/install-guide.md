@@ -155,3 +155,4 @@ LaTeX：把 `sample.tex` 复制过去，按 **Ctrl+Alt+B**，应生成 `sample.p
 | MiKTeX 提示 `User/administrator updates out-of-sync` | 不影响出 PDF；可管理员运行 MiKTeX Console 更新 |
 | 中文 LaTeX 报错 | 必须用 `xelatex`（本 skill 已默认），不要改成 pdflatex |
 | 路径报「文件不存在」 | 路径含特殊字符/单引号时，用相对路径，别把绝对路径拼进命令 |
+| 编译后目录里多出一堆文件 | 正常，都是 MSVC 产物（`.exe/.obj/.pdb/.ilk`），且已统一放在 `build\` 下；删掉 `build\` 即可清理 |

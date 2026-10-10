@@ -79,6 +79,8 @@ For LaTeX, copy `sample.tex` over and press **Ctrl+Alt+B** — `sample.pdf` shou
 
 > Note: `-All` compiles **every** source file in the folder. If the folder also holds another sample with a `main` (such as `hello.c`), you get `LNK2005 duplicate definition` — move or delete the extra file first.
 
+All build outputs go into a **`build\`** folder in the project (`.exe` / `.obj` / `.pdb` / `.ilk`), so the project root keeps only your sources and the config. To clean up, just delete `build\`.
+
 ## Layout
 
 ```

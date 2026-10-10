@@ -2,6 +2,8 @@
 # Build C/C++ sources with MSVC. Called by tasks.json, or run manually.
 # 单文件：-Source xx.cpp ；多文件：-Source xx.cpp -All（编译同目录全部 .c/.cpp/.cc/.cxx）
 # Single file: -Source xx.cpp ; multiple files: -Source xx.cpp -All
+# 所有编译产物（.obj/.pdb/.ilk/.exe）统一放进项目下的 build\ 目录，项目根保持干净。
+# All build outputs (.obj/.pdb/.ilk/.exe) go into a build\ folder so the project root stays clean.
 # VS 路径自动探测，无需硬编码；如有多套 VS 可用 -VsPath 指定。
 param(
     [Parameter(Mandatory = $true)]
@@ -64,7 +66,6 @@ Import-Module $devShell
 Enter-VsDevShell -VsInstallPath $VsPath -SkipAutomaticLocation -DevCmdArguments '-arch=x64' | Out-Null
 
 $source = (Resolve-Path $Source).Path
-$outExe = [System.IO.Path]::ChangeExtension($source, '.exe')
 $workDir = Split-Path $source
 
 # 单文件默认；-All 时编译同目录内全部 C/C++ 源文件再统一链接
@@ -78,7 +79,13 @@ if ($All) {
     $compileList = @($source)
 }
 
-Push-Location $workDir
+# 编译产物统一输出到 build\，项目根目录不残留 .obj/.pdb/.ilk/.exe
+$buildDir = Join-Path $workDir 'build'
+if (-not (Test-Path $buildDir)) { New-Item -ItemType Directory -Path $buildDir -Force | Out-Null }
+$outExe = Join-Path $buildDir ([System.IO.Path]::GetFileNameWithoutExtension($source) + '.exe')
+
+# 在 build\ 下执行 cl：.obj / .pdb / .ilk 默认都落在当前目录，即 build\
+Push-Location $buildDir
 try {
     cl /nologo /EHsc /Zi $compileList "/Fe:$outExe"
     if ($LASTEXITCODE -ne 0) {

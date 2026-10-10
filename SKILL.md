@@ -74,6 +74,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<skill目录>\scripts\new-p
 - **C / C++**：打开 `.c` 或 `.cpp` 按 **F5**（自动编译 + 调试）
 - **LaTeX**：`.tex` 按 **Ctrl+Alt+B** 编译、**Ctrl+Alt+V** 预览（保存即自动编译）
 
+编译产物统一放进项目下的 `build\`（`hello.exe` / `hello.obj` / `hello.pdb` / `vc140.pdb` / `hello.ilk`），**项目根只留源码与配置**。想清理直接删掉 `build\` 文件夹即可，不要手动删根目录里的 `build.ps1`（那是编译脚本，不是产物）。
+
 ## C 与 C++ 说明
 
 - MSVC 的 `cl.exe` **按扩展名识别语言**：`.c` 当 C 编，`.cpp` 当 C++ 编，无需额外配置
